@@ -16,11 +16,11 @@ builder.Services.AddHttpClient("App_LicenseManager.ServerAPI", client => client.
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("App_LicenseManager.ServerAPI"));
 
-builder.Services.AddApiAuthorization();
-//builder.Services.AddAuthorizationCore();
-//builder.Services.AddScoped<JwtAuthenticatorProvider>();
-//builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticatorProvider>(provider => provider.GetRequiredService<JwtAuthenticatorProvider>());
-//builder.Services.AddScoped<ILoginServices, JwtAuthenticatorProvider>(provider => provider.GetRequiredService<JwtAuthenticatorProvider>());
+//builder.Services.AddApiAuthorization();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<JwtAuthenticatorProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, JwtAuthenticatorProvider>(provider => provider.GetRequiredService<JwtAuthenticatorProvider>());
+builder.Services.AddScoped<ILoginServices, JwtAuthenticatorProvider>(provider => provider.GetRequiredService<JwtAuthenticatorProvider>());
 builder.Services.AddBlazoredModal();
 
 await builder.Build().RunAsync();
