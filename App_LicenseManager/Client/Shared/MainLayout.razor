@@ -1,7 +1,50 @@
-﻿
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
+<MudThemeProvider />
 
-<div class="page" style="background-color: #e9ecef; ">
+<MudLayout>
+    <MudAppBar Elevation="1" Dense="@dense">
+        <MudTooltip Text="Menu Principal">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+        </MudTooltip>
+        <AuthorizeView>
+            <Authorized>
+                <h6><a href="/CambiarPassword" style="color:white;">@context.User.Claims.First(c => c.Type == System.Security.Claims.ClaimTypes.Name).Value</a></h6>
+            </Authorized>
+        </AuthorizeView>
+        <MudSpacer />
+        <MudTooltip Text="Cambiar Clave Usuario">
+            <MudIconButton Icon="@Icons.Filled.Key" Color="Color.Inherit" Link="CambiarPassword" />
+        </MudTooltip>
+        <MudTooltip Text="Desconectarse">
+            <MudIconButton Icon="@Icons.Filled.Logout" Color="Color.Inherit" Link="Logout" />
+        </MudTooltip>
+    </MudAppBar>
+    <MudDrawer @bind-Open="@open" ClipMode="clipMode" Elevation="1" Variant="@DrawerVariant.Responsive" >
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Gestor de Licencias</MudText>
+        </MudDrawerHeader>
+        <NavMenu></NavMenu>
+    </MudDrawer>
+    <MudMainContent Class="pt-16 px-16">
+        <MudContainer Class="mt-6">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+@code {
+    bool open = true;
+    bool dense = true;
+    DrawerClipMode clipMode = DrawerClipMode.Never;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
+}
+
+
+
+@*<div class="page" style="background-color: #e9ecef; ">
     <AuthorizeView>
         <Authorized>
             <div class="sidebar" style="background-image: linear-gradient(to right, #28a745 0%, #17a2b8 100%) !important;">
@@ -26,4 +69,4 @@
             @Body
         </div>
     </div>
-</div>
+</div>*@
