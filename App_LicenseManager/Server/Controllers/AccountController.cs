@@ -18,7 +18,7 @@ using App_LicenseManager.Shared;
 using App_LicenseManager.Shared.Models.dtos.Licenses;
 using App_LicenseManager.Shared.Models.Entities;
 
-namespace App_LicenseManager.Server.Controllers.Licenses
+namespace App_LicenseManager.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

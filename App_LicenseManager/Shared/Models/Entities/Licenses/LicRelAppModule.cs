@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace App_LicenseManager.Shared.Models.Entities.Licenses
 {
-    public class RelAppModules
+    public class LicRelAppModule
     {
         
-        public int IdApp { get; set; }
+        public int IdApplication { get; set; }
         
         public int IdModule { get; set; }
-        public MaeApp MaeApps { get; set; }
-        public MaeModules MaeModules { get; set; }
+        public List<LicApplication> LicApplications { get; set; }
+        public List<LicModule> LicModules { get; set; }
     }
 }

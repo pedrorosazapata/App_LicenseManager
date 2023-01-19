@@ -18,6 +18,7 @@ namespace App_LicenseManager.Shared.Models.Entities.Licenses
         public string Version { get; set; }
 
         
-        //public List<RelAppModules> RelAppsModules { get; set; }=new List<RelAppModules>();
+        public List<LicRelAppModule> LicRelAppModules { get; set; }=new List<LicRelAppModule>();
+        
     }
 }
