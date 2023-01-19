@@ -1,0 +1,171 @@
+﻿@page "/licencetype-list"
+@inherits OurComponentBase
+
+
+<div class="row">
+    <div class="col-md-12">
+        <PageTitle>Tabla Tipo Licencias</PageTitle>
+    </div>
+</div>
+
+<table class="w-100">
+    <tr>
+        <td>
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Style="color:darkblue">Tipo de Licencias</MudText>
+                </MudCardContent>
+            </MudCard>
+            <br /><br />
+        </td>
+    </tr>
+</table>
+
+
+@if (licenceType == null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <text>Cargando ...</text>
+        </div>
+    </div>
+
+}
+
+<div class="row">
+    <div class="col-md-12">
+
+        <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px; background-color:darkblue" Text="Nuevo" Click="@btnNuevo" />
+        <RadzenButton Icon="logout" style="margin-bottom: 10px; background-color:darkred" Text="Volver" Click="@btnVolver" />
+        @*DataGridView*@
+        <RadzenDataGrid AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="20"
+                        AllowPaging="true"
+                        PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                        Data="@licenceType" TItem="LicLicenceType" LogicalFilterOperator="LogicalFilterOperator.Or"
+                        SelectionMode="DataGridSelectionMode.Single" @bind-Value=@Selected
+                        EqualsText="Igual" AndOperatorText="Y" OrOperatorText="O" NotEqualsText="No es Igual" ContainsText="Contiene"
+                        StartsWithText="Comienza con" EndsWithText="Termina con" ClearFilterText="Limpiar"
+                        ApplyFilterText="Aplicar" FilterText="Filtrar" EmptyText="No hay registros que mostrar"
+                        IsNullText="Es nulo" IsNotNullText="No es nulo" DoesNotContainText="No contiene"
+                        AllowColumnResize="true" RowSelect="@RowSelect">
+            <Columns>
+                <RadzenDataGridColumn TItem="LicLicenceType" Property="Id" Title="Código" Width="110px" />
+                <RadzenDataGridColumn TItem="LicLicenceType" Property="Name" Title="Nombre" />
+                <RadzenDataGridColumn TItem="LicLicenceType" Property="NumEmp" Title="Num. Empresas" />
+                <RadzenDataGridColumn TItem="LicLicenceType" Property="NumUsu" Title="Num. Usuarios" />
+                <RadzenDataGridColumn TItem="LicLicenceType" Property="IsActive" Title="Activo" Width="110px"
+                                      Sortable=false Filterable=false>
+                    <Template Context="datos">
+                        <RadzenCheckBox @bind-Value=@datos.IsActive TValue=bool></RadzenCheckBox>
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LicLicenceType" Title="Operaciones" Filterable="false" Width="110px" Sortable="false" TextAlign="TextAlign.Center">
+                    <Template Context="datos">
+                        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="edit" Size="ButtonSize.Small"
+                                      Click="@((args) =>btnEditar(datos.Id))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small"
+                                      Click="@((args) =>BorrarRegistro(datos.Id))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+
+    </div>
+</div>
+
+
+
+
+@code {
+
+    LicLicenceType[] licenceType { get; set; }
+    IList<LicLicenceType> selected = new List<LicLicenceType>();
+    IList<LicLicenceType> Selected
+    {
+        get => selected;
+        set
+        {
+            if (!cancelNextSelected) selected = value;
+            cancelNextSelected = false;
+        }
+    }
+    LicLicenceType ItemSelect => Selected.FirstOrDefault();
+
+    bool cancelNextSelected = false;
+
+
+
+    protected async Task RowSelect(LicLicenceType args)
+    {
+        await btnEditar(args.Id);
+
+    }
+    protected async override Task OnInitializedAsync()
+    {
+        await Cargar();
+    }
+
+    private async Task Cargar()
+    {
+        var httpReponse = await repositorio.Get<LicLicenceType[]>("LicLicenceType");
+        licenceType = httpReponse.Response;
+
+    }
+
+    protected async Task btnEditar(long IdModule)
+    {
+        var dialogResult = await DialogService.OpenAsync<Edit>("Editar Tipo Licencia", new Dictionary<string, object>() {
+            {"IdLicenceType", IdModule} });
+
+        await Cargar();
+    }
+    protected async Task btnVolver(MouseEventArgs args)
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    protected async Task btnNuevo(MouseEventArgs args)
+    {
+        var dialogResult2 = await DialogService.OpenAsync<Create>("Nuevo Tipo Licencia", null);
+
+        await Cargar();
+    }
+
+    private async Task BorrarRegistro(long IdLicenceType)
+
+    {
+        //DialogService.Confirm()
+        var personaSeleccionada = licenceType.First(x => x.Id == IdLicenceType);
+        string mensajeConfirmacion = $"¿Deseas borrar la tipo de licencia ({personaSeleccionada.Name})?";
+
+        if (await DialogService.Confirm(mensajeConfirmacion, "Eliminar Tipo Licencia") == true)
+
+        {
+            var responseHttp = await repositorio.Delete($"LicLicenceType/{IdLicenceType}");
+            if (responseHttp.Error)
+            {
+                await mostrarMensajes.MostrarMensajeError(await responseHttp.GetBody());
+            }
+            else
+            {
+                ShowNotification(new NotificationMessage
+                    {
+
+                        Severity = NotificationSeverity.Error,
+                        Summary = "Proceso Eliminación",
+                        Detail = "Se ha realizado correctamente",
+                        Duration = 2000
+                    });
+                await Cargar();
+            }
+        }
+
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+
+}

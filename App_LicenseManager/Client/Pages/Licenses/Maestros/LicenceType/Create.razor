@@ -1,0 +1,40 @@
+﻿@page "/crear-licencetype"
+@using App_LicenseManager.Client.Helpers
+@inherits OurComponentBase
+@inject IMostrarMensajes mostrarMensaje
+
+
+
+<Formulario LicLicenceType="@maeLicenceType" onValidSubmit="@Crear"></Formulario>
+
+
+@code {
+    LicLicenceType maeLicenceType = new LicLicenceType();
+    async Task Crear()
+    {
+        maeLicenceType.CreateDate = DateTime.Now;
+        maeLicenceType.CreateUser = "pedro";
+        var httpResponse = await repositorio.Post("LicLicenceType", maeLicenceType);
+        if (httpResponse.Error)
+        {
+            await mostrarMensaje.MostrarMensajeError(await httpResponse.GetBody());
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage
+                {
+
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Proceso Nueva Alta",
+                    Detail = "Se ha realizado correctamente",
+                    Duration = 2000
+                });
+            NavigationManager.NavigateTo("licencetype-list");
+        }
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+}

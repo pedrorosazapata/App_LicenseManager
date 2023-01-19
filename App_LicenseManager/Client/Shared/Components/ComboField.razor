@@ -1,0 +1,101 @@
+﻿@using System.Reflection
+@using System.Linq.Expressions;
+@using System.ComponentModel.DataAnnotations;
+
+@typeparam TValue
+@inherits InputBase<string>
+@if (@Autosize == true)
+{
+    classAuto = "col-12";
+}
+<DisplayName For="@For" Clase="@classAuto" MostrarLabel="@MostrarLabel">
+
+    @if (EditMode)
+    {
+        @if (SearchMode)
+        {
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label @classAuto" Id="@Id"> </label>
+                <div class="col-sm-10">
+                    <RadzenDropDown Id="@Id" Name="@Name" AllowClear="false" TValue="string" 
+                            @bind-Value="@CurrentValue"
+                            Data=@Data TextProperty="@TextProperty" ValueProperty="@ValueProperty"
+                            FilterCaseSensitivity=" Radzen.FilterCaseSensitivity.CaseInsensitive" FilterOperator=" 
+                            Radzen.StringFilterOperator.StartsWith" AllowFiltering="true" class="@classAuto"/>
+                </div>
+            </div>
+
+
+
+        }
+        else
+        {
+
+            <label Id="@Id"> </label>
+
+            <RadzenDropDown Id="@Id" Name="@Name" AllowClear="false" TValue="string" @bind-Value="@CurrentValue"
+                    Data=@Data TextProperty="@TextProperty" ValueProperty="@ValueProperty" />
+
+
+
+
+
+
+        }
+    }
+    else
+    {
+        <br />
+        <label Id="@Id"> @GetValue()</label>
+    }
+</DisplayName>
+@if (DisplayValidationMessage)
+{
+    <div class="form-control-validation">
+        <ValidationMessage For="@For" />
+    </div>
+}
+
+@code {
+    //https://chrissainty.com/building-custom-input-components-for-blazor-using-inputbase/
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Name { get; set; }
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public bool DisplayValidationMessage { get; set; } = false;
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public bool EditMode { get; set; } = true;
+    [Parameter] public string TextProperty { get; set; } = "Name";
+    [Parameter] public string ValueProperty { get; set; } = "Code";
+    [Parameter] public IEnumerable<object> Data { get; set; }
+    [Parameter] public bool SearchMode { get; set; } = true;
+    [Parameter] public bool MostrarLabel { get; set; } = true;
+    [Parameter] public bool Autosize { get; set; } = false;
+    public string classAuto { get; set; } = "";
+
+    protected async Task FocusIn()
+    {
+        //await js.InvokeVoidAsync("BlazoredModal.deactivateTrap", Id);
+    }
+
+    protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage)
+    {
+
+        result = value;
+        validationErrorMessage = null;
+        return true;
+    }
+
+    string GetValue()
+    {
+        try
+        {
+            foreach (var item in Data)
+                if (item.GetType().GetProperty(ValueProperty).GetValue(item)?.ToString() == CurrentValue)
+                    return item.GetType().GetProperty(TextProperty).GetValue(item)?.ToString();
+        }
+        catch { }
+        return CurrentValue;
+    }
+}

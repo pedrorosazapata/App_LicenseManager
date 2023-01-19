@@ -1,0 +1,85 @@
+﻿@inherits OurComponentBase
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm TItem="@LicLicenceType" Data="LicLicenceType" Submit="@onValidSubmit">
+                    <ChildContent>
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Nombre" Component="Nombre" style="width: 100%"/>
+                                
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox style="display: block; width: 100%" @bind-Value="@(LicLicenceType.Name)" Name="Nombre">
+                                </RadzenTextBox>
+                                <RadzenRequiredValidator Component="Nombre" Text="Nombre is required" style="position: absolute">
+                                </RadzenRequiredValidator>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom: 1rem">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Nº Usuarios" Component="Num. Usu" style="width: 100%" />
+                            </div>
+                            <div class="col-md-2">
+                                <RadzenNumeric id="NumUsu" TValue=Int32 Format="0.00"
+                                               @bind-Value=@LicLicenceType.NumUsu
+                                               For="@(() => LicLicenceType.NumUsu)" />
+                            </div>
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Nº Empresas" Component="Num. Emp" style="width: 100%" />
+                            </div>
+                            <div class="col-md-2">
+                                <RadzenNumeric id="NumEmp" TValue=Int32 Format="0.00"
+                                               @bind-Value=@LicLicenceType.NumEmp
+                                               For="@(() => LicLicenceType.NumEmp)" />
+                            </div>
+                        </div>
+
+
+                        <div style="margin-bottom: 1rem" class="row">
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Activo" Component="Activo" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenCheckBox @bind-Value="@(LicLicenceType.IsActive)" Name="Activo"></RadzenCheckBox>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="align-content:center">
+
+                                <RadzenButton ButtonType="Radzen.ButtonType.Submit" Icon="save" Text="@TextoBoton"
+                                              Style="background-color:darkblue">
+                                </RadzenButton>
+                                <RadzenButton Icon="close" style="margin-left: 1rem;color:white background-color:darkred" Text="Cancel"
+                                              Click="@(() => Cancelar())">
+                                </RadzenButton>
+                            </div>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>
+
+
+
+
+@code {
+    [Parameter] public LicLicenceType LicLicenceType { get; set; } = new LicLicenceType();
+
+    [Parameter] public String TextoBoton { get; set; } = "Guardar";
+    [Parameter] public EventCallback onValidSubmit { get; set; }
+    async Task Cancelar()
+    {
+
+        NavigationManager.NavigateTo("licencetype-list");
+
+    }
+}

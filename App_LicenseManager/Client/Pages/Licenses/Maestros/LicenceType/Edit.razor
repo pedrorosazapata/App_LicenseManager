@@ -1,0 +1,61 @@
+﻿@page "/editar-licencetype/{IdLicenceType:int}"
+@using App_LicenseManager.Client.Helpers
+@inherits OurComponentBase
+@inject IMostrarMensajes mostrarMensaje
+
+
+
+<Formulario LicLicenceType="@maeLicenceType"  onValidSubmit="@Editar"></Formulario>
+
+@code {
+    [Parameter] public long IdLicenceType { get; set; }
+    LicLicenceType maeLicenceType = new LicLicenceType();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        var HttpResponse = await repositorio.Get<LicLicenceType>($"LicLicenceType/{IdLicenceType}");
+
+        if (HttpResponse.Error)
+        {
+            if (HttpResponse.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                NavigationManager.NavigateTo("licencetype-list");
+            }
+            else
+            {
+                await mostrarMensaje.MostrarMensajeError(await HttpResponse.GetBody());
+            }
+        }
+        else
+        {
+            maeLicenceType = HttpResponse.Response;
+        }
+        
+    }
+
+    async Task Editar()
+    {
+        var httpResponse = await repositorio.Put("LicLicenceType", maeLicenceType);
+        if (httpResponse.Error)
+        {
+            await mostrarMensaje.MostrarMensajeError(await httpResponse.GetBody());
+        }
+        else
+        {
+            ShowNotification(new NotificationMessage
+                {
+
+                    Severity = NotificationSeverity.Success,
+                    Summary = "Proceso Modificación",
+                    Detail = "Se ha realizado correctamente",
+                    Duration = 2000
+                });
+            NavigationManager.NavigateTo("licencetype-list");
+        }
+    }
+    void ShowNotification(NotificationMessage message)
+    {
+        NotificationService.Notify(message);
+
+    }
+}

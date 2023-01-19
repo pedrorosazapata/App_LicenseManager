@@ -1,0 +1,39 @@
+﻿@using System.Reflection
+@using System.Linq.Expressions;
+@using System.ComponentModel.DataAnnotations;
+@typeparam TValue
+@inherits InputBase<string>
+
+<label for="inputPassword" class="@classLabel col-form-label">@Etiqueta</label>
+<div class="@classDiv" style="padding:@padding;">
+    @value=@CurrentValue;
+    <RadzenNumeric id="@Id"  TValue="int" Format="0,00"
+                   @bind-Value=@value
+                   For="@For"
+                   Placeholder=@Placeholder 
+                   class="form-control valid col-12" />
+
+</div>
+
+@code {
+    [Parameter] public string Id { get; set; }
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public Expression<Func<TValue>> bind { get; set; }
+    [Parameter] public string classLabel { get; set; }
+    [Parameter] public string classDiv { get; set; }
+    [Parameter] public string padding { get; set; } = "0px";
+    [Parameter] public string Etiqueta { get; set; }
+
+    Int32 value;
+
+     
+protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage)
+    {
+        result = value;
+        validationErrorMessage = null;
+        return true;
+    }
+
+    
+}

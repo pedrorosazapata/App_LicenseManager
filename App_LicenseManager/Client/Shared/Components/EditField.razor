@@ -1,0 +1,60 @@
+﻿@using System.Reflection
+@using System.Linq.Expressions;
+@using System.ComponentModel.DataAnnotations;
+@typeparam TValue
+@inherits InputBase<string>
+
+
+@if (@Autosize == true)
+{
+    classAuto = "col-12";
+}
+
+<DisplayName For="@For" Clase="@classAuto" MostrarLabel="@MostrarLabel">
+    @ChildContent
+    @if (EditMode)
+    {
+        <input Placeholder="@Placeholder" type="@Type" multiline=true
+           class="form-control @CssClass @classAuto" @bind="@CurrentValue" id="@Id" style=@Style
+           @oninput="EventCallback.Factory.
+            CreateBinder<string>(this,  __value => CurrentValueAsString =
+                                        __value, CurrentValueAsString)" />
+    }
+    else
+    {
+
+        <label class="form-control-no-editmode"> @CurrentValue</label>
+    }
+</DisplayName>
+@if (DisplayValidationMessage)
+{
+    <div class="form-control-validation">
+        <ValidationMessage For="@For" />
+    </div>
+}
+
+@code {
+    //https://chrissainty.com/building-custom-input-components-for-blazor-using-inputbase/
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Type { get; set; }
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public bool DisplayValidationMessage { get; set; } = false;
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public bool EditMode { get; set; } = true;
+    [Parameter] public bool MostrarLabel { get; set; } = true;
+    [Parameter] public string Style { get; set; }
+    [Parameter] public string Clase { get; set; }
+    [Parameter] public bool Autosize { get; set; } = false;
+    public string classAuto { get; set; } = "";
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+
+    protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage)
+    {
+        result = value;
+        validationErrorMessage = null;
+        return true;
+    }
+}

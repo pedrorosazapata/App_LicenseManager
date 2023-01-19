@@ -1,0 +1,63 @@
+﻿@using System.Reflection
+@using System.Linq.Expressions;
+@using System.ComponentModel.DataAnnotations;
+@typeparam TValue
+@inherits InputBase<bool>
+
+@if (EditMode)
+{
+    <div class="d-flex align-items-center">
+        <div class="p-2">
+            <RadzenCheckBox Id="@Id" Name="@Name" @bind-Value="@CurrentValue" TValue="bool" />
+        </div>
+        <div class="p-2">
+            
+            <DisplayName For="@For" @onclick="@(() => CurrentValue = !CurrentValue)" MostrarLabel="@MostrarLabel">@ChildContent</DisplayName>
+        </div>
+
+    </div>
+    
+    
+}
+else
+{
+    <div class="d-flex align-items-center align-middle">
+        <div class="p-2 align-middle">
+            <RadzenCheckBox Id="@Id" Name="@Name" @bind-Value="@CurrentValue" TValue="bool" Disabled="true" />
+        </div>
+        <div class="p-2 align-middle">
+            <DisplayName For="@For" MostrarLabel="@MostrarLabel"> @ChildContent</DisplayName>
+        </div>
+
+    </div>
+    
+    
+}
+
+@if (DisplayValidationMessage)
+{
+    <div class="form-control-validation">
+        <ValidationMessage For="@For" />
+    </div>
+}
+
+@code {
+    //https://chrissainty.com/building-custom-input-components-for-blazor-using-inputbase/
+    [Parameter] public string Id { get; set; }
+    [Parameter] public string Name { get; set; }
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public bool DisplayValidationMessage { get; set; } = false;
+    [Parameter] public string Placeholder { get; set; }
+    [Parameter] public bool EditMode { get; set; } = true;
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public bool MostrarLabel { get; set; } = true;
+
+    protected override bool TryParseValueFromString(string value, out bool result, out string validationErrorMessage)
+    {
+        result = bool.Parse(value);
+        validationErrorMessage = null;
+        return true;
+    }
+}
