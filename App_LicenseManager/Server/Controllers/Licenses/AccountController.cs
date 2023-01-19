@@ -15,8 +15,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json;
 using App_LicenseManager.Server.Data;
 using App_LicenseManager.Shared;
-using App_LicenseManager.Shared.Models.Entities.Licenses;
 using App_LicenseManager.Shared.Models.dtos.Licenses;
+using App_LicenseManager.Shared.Models.Entities;
 
 namespace App_LicenseManager.Server.Controllers.Licenses
 {

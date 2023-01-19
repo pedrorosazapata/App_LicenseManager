@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App_LicenseManager.Shared.Models.Entities.Licenses
+namespace App_LicenseManager.Shared.Models.Entities
 {
     public class Employee
     {
