@@ -240,8 +240,8 @@ namespace App_LicenseManager.Server.Controllers
 
                 IList<Employee> entities = db.Employees.Where(x => (x.Names.Contains(search) || x.LastNames.Contains(search) || x.DNI.Contains(search)) && (x.Status.Contains(status)) && (x.Rol != "USUARIOMAESTRO"))
                    .OrderByDescending(x => x.Id)
-                   .Skip((actualPage - 1) * Utilities.REGISTERSPERPAGE)
-                   .Take(Utilities.REGISTERSPERPAGE)
+                   /*.Skip((actualPage - 1) * Utilities.REGISTERSPERPAGE)
+                   .Take(Utilities.REGISTERSPERPAGE)*/
                    .ToList();
                 ResponseForList response = new ResponseForList()
                 {

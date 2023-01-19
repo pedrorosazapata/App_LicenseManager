@@ -8,11 +8,50 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Pages\Authentication.razor" />
+	  <Content Remove="Shared\LoginDisplay.razor" />
+	  <Content Remove="Shared\RedirectToLogin.razor" />
+	  <Content Remove="Shared\SurveyPrompt.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Shared\wwwroot\favicon.png" />
+	  <None Remove="Shared\wwwroot\icon-192.png" />
+	  <None Remove="Shared\wwwroot\icon-512.png" />
+	  <None Remove="Shared\wwwroot\Images\logo.png" />
+	  <None Remove="Shared\wwwroot\Images\tenor.gif" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Shared\wwwroot\favicon.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="Shared\wwwroot\icon-192.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="Shared\wwwroot\icon-512.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="Shared\wwwroot\Images\logo.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="Shared\wwwroot\Images\tenor.gif">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Blazored.Modal" Version="6.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+		<PackageReference Include="MudBlazor" Version="6.1.7" />
 		<PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
 	</ItemGroup>
 
