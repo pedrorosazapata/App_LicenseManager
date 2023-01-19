@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App_LicenseManager.Shared.Models
+namespace App_LicenseManager.Shared.Models.dtos.Licenses
 {
     public class UserLogin
     {
-        [Display(Name ="Usuario"),Required(ErrorMessage = Utilities.MSGREQUIRED)]
+        [Display(Name = "Usuario"), Required(ErrorMessage = Utilities.MSGREQUIRED)]
         public string UserName { get; set; }
 
         [Display(Name = "Password"), Required(ErrorMessage = Utilities.MSGREQUIRED)]

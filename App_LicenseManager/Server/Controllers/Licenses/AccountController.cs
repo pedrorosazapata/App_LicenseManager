@@ -14,11 +14,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json;
 using App_LicenseManager.Server.Data;
-using App_LicenseManager.Shared.Models.Entities;
-using App_LicenseManager.Shared.Models;
 using App_LicenseManager.Shared;
+using App_LicenseManager.Shared.Models.Entities.Licenses;
+using App_LicenseManager.Shared.Models.dtos.Licenses;
 
-namespace App_LicenseManager.Server.Controllers
+namespace App_LicenseManager.Server.Controllers.Licenses
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -35,12 +35,12 @@ namespace App_LicenseManager.Server.Controllers
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration)
-            {
-                this.db = db;
-                _userManager = userManager;
-                _signInManager = signInManager;
-                _configuration = configuration;
-            }
+        {
+            this.db = db;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _configuration = configuration;
+        }
 
         //Metodos
 
@@ -97,13 +97,13 @@ namespace App_LicenseManager.Server.Controllers
         {
             try
             {
-                var employee = db.Employees.FirstOrDefault( x => x.Id == model.Id);
-                if(employee == null)
+                var employee = db.Employees.FirstOrDefault(x => x.Id == model.Id);
+                if (employee == null)
                 {
                     return BadRequest("No se pudo encontrar un usuario");
                 }
                 string oldDni = employee.DNI;
-                
+
                 employee.DNI = model.DNI.ToUpper();
                 employee.Names = model.Names.ToUpper();
                 employee.LastNames = model.LastNames.ToUpper();
@@ -169,7 +169,7 @@ namespace App_LicenseManager.Server.Controllers
                     return BadRequest("No se pudo encontrar un usuario de acceso");
                 }
 
-                var result = await _userManager.ChangePasswordAsync(user,model.CurrentPass,model.NewPass);
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPass, model.NewPass);
                 if (!result.Succeeded)
                 {
                     return BadRequest(result.Errors);
@@ -232,13 +232,13 @@ namespace App_LicenseManager.Server.Controllers
                     status = "";
 
                 search = search.ToUpper();
-                int allRegisters = db.Employees.Where(x => (x.Names.Contains(search) || x.LastNames.Contains(search) || x.DNI.Contains(search)) && (x.Status.Contains(status)) && (x.Rol != "USUARIOMAESTRO")).Count();
-                if(allRegisters <= 0)
+                int allRegisters = db.Employees.Where(x => (x.Names.Contains(search) || x.LastNames.Contains(search) || x.DNI.Contains(search)) && x.Status.Contains(status) && x.Rol != "USUARIOMAESTRO").Count();
+                if (allRegisters <= 0)
                 {
                     return NotFound(Utilities.MSGNODATA);
                 }
 
-                IList<Employee> entities = db.Employees.Where(x => (x.Names.Contains(search) || x.LastNames.Contains(search) || x.DNI.Contains(search)) && (x.Status.Contains(status)) && (x.Rol != "USUARIOMAESTRO"))
+                IList<Employee> entities = db.Employees.Where(x => (x.Names.Contains(search) || x.LastNames.Contains(search) || x.DNI.Contains(search)) && x.Status.Contains(status) && x.Rol != "USUARIOMAESTRO")
                    .OrderByDescending(x => x.Id)
                    /*.Skip((actualPage - 1) * Utilities.REGISTERSPERPAGE)
                    .Take(Utilities.REGISTERSPERPAGE)*/
@@ -288,7 +288,7 @@ namespace App_LicenseManager.Server.Controllers
 
             if (employee != null || userInfo.UserName == "admin")
             {
-                if(employee != null && employee.Status != "ACTIVO")
+                if (employee != null && employee.Status != "ACTIVO")
                 {
                     return BadRequest(Utilities.MSGSUSPENDEDUSER);
                 }
@@ -307,7 +307,7 @@ namespace App_LicenseManager.Server.Controllers
             {
                 return BadRequest(Utilities.MSGCREDENTIALSFAILS);
             }
-            
+
         }
 
         [HttpDelete("DeleteUser/{id}")]
@@ -333,7 +333,7 @@ namespace App_LicenseManager.Server.Controllers
                     return BadRequest(result.Errors);
                 }
                 db.Remove(employee);
-                
+
                 await db.SaveChangesAsync();
                 return Ok("ok");
             }

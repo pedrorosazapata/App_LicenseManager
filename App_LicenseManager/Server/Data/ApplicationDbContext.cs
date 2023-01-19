@@ -2,26 +2,18 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using App_LicenseManager.Shared.Models;
-using App_LicenseManager.Shared.Models.Entities;
-using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+
+using App_LicenseManager.Shared.Models.Entities.Licenses;
 
 namespace App_LicenseManager.Server.Data
 {
-    public class ApplicationDbContext : IdentityDbContext//IdentityDbContextApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
-        //public ApplicationDbContext(
-        //    DbContextOptions options,
-        //    IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-        //{
-        //}
+        //Tablas de mantenimiento de Licencias
         public DbSet<Employee> Employees { get; set; }
     }
 }

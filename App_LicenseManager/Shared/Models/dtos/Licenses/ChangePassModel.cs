@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App_LicenseManager.Shared.Models
+namespace App_LicenseManager.Shared.Models.dtos.Licenses
 {
     public class ChangePassModel
     {

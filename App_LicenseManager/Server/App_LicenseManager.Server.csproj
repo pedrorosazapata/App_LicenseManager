@@ -8,6 +8,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Areas\**" />
+	  <Content Remove="Areas\**" />
+	  <EmbeddedResource Remove="Areas\**" />
+	  <None Remove="Areas\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Remove="Controllers\OidcConfigurationController.cs" />
 		<Compile Remove="Models\ApplicationUser.cs" />
 	</ItemGroup>

@@ -1,17 +1,18 @@
-﻿        <MudNavMenu  >
-            <MudNavLink Href="/" Icon="@Icons.Filled.Home" IconColor="Color.Inherit" Style="color:black">Inicio</MudNavLink>
-            <AuthorizeView Roles="USUARIOMAESTRO,ADMINISTRADOR">
-                <MudNavGroup Title="Administración" Icon="@Icons.Filled.Settings" IconColor="Color.Inherit" Style="color:black">
-                    <MudNavLink Href="/Usuarios" Icon="@Icons.Filled.People" IconColor="Color.Inherit" Style="color:black">Usuarios</MudNavLink>
-                </MudNavGroup>
-                <MudNavLink Href="#" Icon="@Icons.Filled.Add" IconColor="Color.Inherit" Style="color:black">Solicitudes  </MudNavLink>
-                <MudNavLink Href="#" Icon="@Icons.Filled.Add" IconColor="Color.Inherit" Style="color:black">Licencias compradas</MudNavLink>
-                <MudNavGroup Title="Maestros" Icon="@Icons.Filled.GridOn" IconColor="Color.Inherit" Style="color:black">
-                    <MudNavLink Href="application-list" Icon="@Icons.Filled.Api" IconColor="Color.Inherit" Style="color:black">Aplicaciones</MudNavLink>
-                    <MudNavLink Href="modules-list" Icon="@Icons.Filled.ViewModule" IconColor="Color.Inherit" Style="color:black">Módulos</MudNavLink>
-                    <MudNavLink Href="#" Icon="@Icons.Filled.Key" IconColor="Color.Inherit" Style="color:black">Licencias</MudNavLink>
-                    <MudNavLink Href="licencetype-list" Icon="@Icons.Filled.GroupWork" IconColor="Color.Inherit" Style="color:black">Tipo Licencia</MudNavLink>
-                    <MudNavLink Href="#" Icon="@Icons.Filled.Person" IconColor="Color.Inherit" Style="color:black">Clientes</MudNavLink>
-                </MudNavGroup>
-            </AuthorizeView>
-        </MudNavMenu>
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Icon="@Icons.Filled.Home" IconColor="Color.Inherit" Style="color:black">Inicio</MudNavLink>
+    <AuthorizeView Roles="USUARIOMAESTRO">
+        <MudNavGroup Title="Adm Licencias" Icon="@Icons.Filled.Settings" IconColor="Color.Inherit" Style="color:black">
+            <MudNavLink Href="/Usuarios" Icon="@Icons.Filled.People" IconColor="Color.Inherit" Style="color:black">Usuarios</MudNavLink>
+            <MudNavLink Href="#" Icon="@Icons.Filled.Add" IconColor="Color.Inherit" Style="color:black">Solicitudes  </MudNavLink>
+            <MudNavLink Href="#" Icon="@Icons.Filled.Add" IconColor="Color.Inherit" Style="color:black">Licencias compradas</MudNavLink>
+            <MudNavGroup Title="Maestros" Icon="@Icons.Filled.GridOn" IconColor="Color.Inherit" Style="color:black">
+                <MudNavLink Href="application-list" Icon="@Icons.Filled.Api" IconColor="Color.Inherit" Style="color:black">Aplicaciones</MudNavLink>
+                <MudNavLink Href="modules-list" Icon="@Icons.Filled.ViewModule" IconColor="Color.Inherit" Style="color:black">Módulos</MudNavLink>
+                <MudNavLink Href="#" Icon="@Icons.Filled.Key" IconColor="Color.Inherit" Style="color:black">Licencias</MudNavLink>
+                <MudNavLink Href="licencetype-list" Icon="@Icons.Filled.GroupWork" IconColor="Color.Inherit" Style="color:black">Tipo Licencia</MudNavLink>
+                <MudNavLink Href="#" Icon="@Icons.Filled.Person" IconColor="Color.Inherit" Style="color:black">Clientes</MudNavLink>
+            </MudNavGroup>
+        </MudNavGroup>
+
+    </AuthorizeView>
+</MudNavMenu>
